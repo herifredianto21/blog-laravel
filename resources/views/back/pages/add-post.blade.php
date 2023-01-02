@@ -51,7 +51,7 @@
                         <div class="image_holder mb-2" style="max-width: 250px">
                             <img src="" alt="" class="img-thumbnail" id="image-previewer" data-ijabo-default-img=''>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save post</button>
+                        <button type="submit" class="btn btn-primary">Save posts</button>
                     </div>
                 </div>
             </div>
@@ -75,40 +75,40 @@
                 }
             });
 
-            // $('form#addPostForm').on('submit', function(e){
-            //     e.preventDefault();
-            //     toastr.remove();
-            //     var form = this;
-            //     var fromdata = new FormData(form);
+            $('form#addPostForm').on('submit', function(e){
+                e.preventDefault();
+                toastr.remove();
+                var form = this;
+                var fromdata = new FormData(form);
 
-            //     $.ajax({
-            //         url:$(form).attr('action'),
-            //         method:$(form).attr('method'),
-            //         data:fromdata,
-            //         processData:false,
-            //         dataType:'json',
-            //         contentType:false, 
-            //         beforeSend:function(){
-            //             $(form).find('span.error-text').text('');
-            //         },
-            //         success:function(response){
-            //             toastr.remove();
-            //             if(response.code == 1){
-            //                 $(form)[0].reset();
-            //                 $('div.image_holder').html('');
-            //                 toastr.success(response.msg);
-            //             }else{
-            //                 toastr.error(response.msg);
-            //             }
-            //         },
-            //         error:function(response){
-            //             toastr.remove();
-            //             $.each(response.responseJSON.errors, function(prefix,val){
-            //                 $(form).find('span.'+prefix+'_error').text(val[0]);
-            //             });
-            //         }
-            //     });
-            // });
+                $.ajax({
+                    url:$(form).attr('action'),
+                    method:$(form).attr('method'),
+                    data:fromdata,
+                    processData:false,
+                    dataType:'json',
+                    contentType:false, 
+                    beforeSend:function(){
+                        $(form).find('span.error-text').text('');
+                    },
+                    success:function(response){
+                        toastr.remove();
+                        if(response.code == 1){
+                            $(form)[0].reset();
+                            $('div.image_holder').html('');
+                            toastr.success(response.msg);
+                        }else{
+                            toastr.error(response.msg);
+                        }
+                    },
+                    error:function(response){
+                        toastr.remove();
+                        $.each(response.responseJSON.errors, function(prefix,val){
+                            $(form).find('span.'+prefix+'_error').text(val[0]);
+                        });
+                    }
+                });
+            });
 
 
         });

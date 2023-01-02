@@ -89,7 +89,7 @@
         <!-- Tabler Core -->
         <script src="{{asset('back')}}/dist/js/tabler.minbf07.js" defer></script>
         <script src="{{asset('back')}}/dist/libs/jquery/jquery-3.6.1.min.js"></script>
-        <script src="{{asset('back')}}/dist/libs/ijabo/ijabo.min.js')}}"></script>
+        <script src="{{asset('back')}}/dist/libs/ijabo/ijabo.min.js"></script>
         <script src="{{asset('back')}}/dist/libs/ijaboCropTool/ijaboCropTool.min.js"></script>
         <script src="{{asset('back')}}/dist/libs/ijaboViewer/jquery.ijaboViewer.min.js"></script>
         @stack('scripts')
