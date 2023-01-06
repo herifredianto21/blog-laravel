@@ -28,7 +28,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Post Content</label>
-                            <textarea class="form-control" name="post_content" rows="6" placeholder="Content.."></textarea>
+                            <textarea class="ckeditor form-control" name="post_content" rows="6" placeholder="Content.." id="post_content"></textarea>
                             <span class="text-danger error-text post_content_error"></span>
                         </div>
                     </div>
@@ -61,6 +61,11 @@
 @endsection
 
 @push('scripts')
+
+    <script src="/ckeditor/ckeditor.js">
+
+    </script>
+
     <script>
         $(function(){
             $('input[type="file"][name="featured_image"]').ijaboViewer({
@@ -78,8 +83,10 @@
             $('form#addPostForm').on('submit', function(e){
                 e.preventDefault();
                 toastr.remove();
+                var post_content = CKEDITOR.instances.post_content.getData();
                 var form = this;
                 var fromdata = new FormData(form);
+                    fromdata.append('post_content', post_content);
 
                 $.ajax({
                     url:$(form).attr('action'),
@@ -95,7 +102,8 @@
                         toastr.remove();
                         if(response.code == 1){
                             $(form)[0].reset();
-                            $('div.image_holder').html('');
+                            $('div.image_holder').find('img').attr('src','');
+                            CKEDITOR.instances.post_content.setData('')
                             toastr.success(response.msg);
                         }else{
                             toastr.error(response.msg);

@@ -8,7 +8,7 @@ use App\Models\User;
 class AuthorPersonalDetails extends Component
 {
     public $author;
-    public $name, $usename, $email, $biography;
+    public $name, $username, $email, $biography;
 
     public function mount()
     {

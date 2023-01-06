@@ -135,6 +135,8 @@
                         </span>
                     </a>
                     </li>
+                    
+                    @if ( auth()->user()->type == 1)
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('author.categories') }}" >
                             
@@ -144,7 +146,6 @@
                         </a>
                     </li>
 
-                    @if ( auth()->user()->type == 1)
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('author.authors')}}" >
                             
@@ -172,7 +173,7 @@
                                     <a class="dropdown-item" href="{{route('author.posts.add-post')}}">
                                     Add New
                                     </a>
-                                    <a class="dropdown-item" href="invoice.html">
+                                    <a class="dropdown-item" href="{{ route('author.posts.all_posts') }}">
                                     All Post
                                     </a>
                                 </div>
@@ -180,6 +181,8 @@
                         </div>
                     
                     </li>
+                    @if ( auth()->user()->type == 1 )
+                        
                     <li class="nav-item active dropdown">
                         <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                             <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/layout-2 -->
@@ -199,6 +202,8 @@
                             </div>
                         </div>
                     </li>
+                    @endif
+                    
                 </ul>
             </div>
         </div>
