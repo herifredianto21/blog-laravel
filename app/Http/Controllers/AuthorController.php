@@ -144,4 +144,100 @@ class AuthorController extends Controller
             }
         }
     }
+
+    public function editPost(Request $request){
+        if ( !request()->post_id ) {
+            return abort(404);
+        } else{
+            $post = Post::find(request()->post_id);
+            $data = [
+                'post'=>$post,
+                'pageTitle'=>'Edit Post',
+            ];
+            return view('back.pages.edit_post',$data);
+        }
+    }
+
+    public function updatePost(Request $request){
+        if( $request->hasFile('featured_image') ){
+            
+            $request->validate([
+                'post_title'=>'required|unique:posts,post_title,'.$request->post_id,
+                'post_content'=>'required',
+                'post_category'=>'required|exists:sub_categories,id',
+                'featured_image'=>'mimes:jpeg,jpg,png|max:1024',
+            ]);
+
+            $path = "images/post_images/";
+            $file = $request->file('featured_image');
+            $filename = $file->getClientOriginalName();
+            $new_filename = time().'_'.$filename;
+
+            $upload = Storage::disk('public')->put($path.$new_filename, (string) file_get_contents($file));
+
+            $post_thumbnails_path = $path.'thumbnails';
+            if( !Storage::disk('public')->exists($post_thumbnails_path) ){
+                Storage::disk('public')->makeDirectory($post_thumbnails_path, 0755, true, true);
+            }
+
+            Image::make( storage_path('app/public/'.$path.$new_filename) )
+                ->fit(200, 200)
+                ->save( storage_path('app/public/'.$path.'thumbnails/'.'thumb_'.$new_filename) );
+
+            Image::make( storage_path('app/public/'.$path.$new_filename) )
+                ->fit(500, 350)
+                ->save( storage_path('app/public/'.$path.'thumbnails/'.'resized_'.$new_filename) );
+
+            if( $upload ){
+                $old_post_image = Post::find($request->post_id)->featured_image;
+
+                if( $old_post_image != null && Storage::disk('public')->exists($path.$old_post_image) ){
+                    Storage::disk('public')->delete($path.$old_post_image);
+
+                    if( Storage::disk('public')->exists($path.'thumbnails/resized_'.$old_post_image) ){
+                        Storage::disk('public')->delete($path.'thumbnails/resized_'.$old_post_image);
+                    }
+
+                    if( Storage::disk('public')->exists($path.'thumbnails/thumb_'.$old_post_image) ){
+                        Storage::disk('public')->delete($path.'thumbnails/thumb_'.$old_post_image);
+                    }
+                }
+
+                $post = Post::find($request->post_id);
+                $post->category_id = $request->post_category;
+                $post->post_slug = null;
+                $post->post_content = $request->post_content;
+                $post->post_title = $request->post_title;
+                $saved = $post->save();
+
+                if($saved){
+                    return response()->json(['code'=>1,'msg'=>'Post has been successfully updated.']);
+                } else {
+                    return response()->json(['code'=>3,'msg'=>'Error in updating new featured image.']);
+                }
+
+            } else {
+                return response()->json(['code'=>3,'msg'=>'Error in uploading new featured image.']);
+            }
+
+        }else{
+            $request->validate([
+                'post_title'=>'required|unique:posts,post_title,'.$request->post_id,
+                'post_content'=>'required',
+                'post_category'=>'required|exists:sub_categories,id'
+            ]);
+            $post = Post::find($request->post_id);
+            $post->category_id = $request->post_category;
+            $post->post_slug = null;
+            $post->post_content = $request->post_content;
+            $post->post_title = $request->post_title;
+            $saved = $post->save();
+
+            if($saved){
+                return response()->json(['code'=>1,'msg'=>'Post has been successfully updated.']);
+            } else {
+                return response()->json(['code'=>3,'msg'=>'Something went wrong for updating.']);
+            }
+        }
+    }
 }
