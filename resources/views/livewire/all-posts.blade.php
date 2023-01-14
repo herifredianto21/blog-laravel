@@ -50,7 +50,7 @@
                 </div>
                 <div class="d-flex">
                     <a href="{{ route('author.posts.edit-post',['post_id'=>$post->id]) }}" class="card-btn">Edit</a>
-                    <a href="" class="card-btn">Hapus</a>
+                    <a href="" wire:click.prevent='deletePost({{$post->id}})' class="card-btn">Hapus</a>
                 </div>
             </div>
         </div>
