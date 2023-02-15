@@ -16,14 +16,15 @@ class Categories extends Component
     public $updateCategoryMode = false;
 
     public $subcategory_name;
-    public $parent_category;
+    public $parent_category = 0;
     public $selected_subcategory_id;
     public $updateSubCategoryMode = false;
 
     protected $listeners = [
         'resetModalForm',
         'deleteCategoryAction',
-        'deleteSubCategoryAction'
+        'deleteSubCategoryAction',
+        'updateCategoryOrdering'
     ];
 
     public function resetModalForm(){
@@ -183,6 +184,10 @@ class Categories extends Component
             $subcategory->delete();
             $this->showToastr('Subcategory has been successfully deleted.','info');
         }
+    }
+
+    public function updateCategoryOrdering($positions){
+        dd($positions);
     }
 
     public function showToastr($message,$type){

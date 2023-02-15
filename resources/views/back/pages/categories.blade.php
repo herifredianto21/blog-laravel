@@ -77,5 +77,22 @@
             }
         });
       });
+
+      $('table tbody#sortable_category').sortable({
+        update:function(event, ui){
+          $(this).children().each(function(index){
+            if($(this).attr("data-ordering") != (index+1)){
+              $(this).attr("data-ordering", (index+1)).addClass("updated");
+            }
+          });
+          var positions = [];
+          $(".updated").each(function(){
+            positions.push([$(this).attr("data-index"), $(this).attr("data-ordering")]);
+            $(this).removeClass("updated");
+          });
+          alert(positions);
+          // window.livewire.emit("updateCategoryOrdering", positions);
+        }
+      });
     </script>
 @endpush

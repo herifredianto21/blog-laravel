@@ -48,6 +48,7 @@
         <link href="{{asset('back')}}/dist/css/tabler-vendors.minbf07.css" rel="stylesheet"/>
         <link rel="stylesheet" href="{{asset('back')}}/dist/libs/ijabo/ijabo.min.css">
         <link rel="stylesheet" href="{{asset('back')}}/dist/libs/ijaboCropTool/ijaboCropTool.min.css">
+        <link rel="stylesheet" href="{{asset('amsify')}}/amsify.suggestags.css">
         @stack('stylesheets')
         @livewireStyles
         <link href="{{asset('back')}}/dist/css/demo.minbf07.css" rel="stylesheet"/>
@@ -92,9 +93,13 @@
         <script src="{{asset('back')}}/dist/libs/ijabo/ijabo.min.js"></script>
         <script src="{{asset('back')}}/dist/libs/ijaboCropTool/ijaboCropTool.min.js"></script>
         <script src="{{asset('back')}}/dist/libs/ijaboViewer/jquery.ijaboViewer.min.js"></script>
+        <script src="{{asset('amsify')}}/jquery.amsify.suggestags.js"></script>
         @stack('scripts')
         @livewireScripts
         <script>
+
+            $('input[name="post_tags"]').amsifySuggestags();
+
             window.addEventListener('showToastr', function(event){
                 toastr.remove();
                 if(event.detail.type === 'info'){

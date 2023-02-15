@@ -80,13 +80,13 @@
                           <th class="w-1"></th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody id="sortable_category">
                         @forelse ($subcategories as $subcategory)
-                            
-                        <tr>
+                          
+                        <tr data-index="{{$category->id}}" data-ordering="{{$category->ordering}}">
                           <td> {{$subcategory->subcategory_name}} </td>
                           <td class="text-muted">
-                            {{ $subcategory->parentcategory->category_name }}
+                            {{ $subcategory->parent_category != 0 ? $subcategory->parentcategory->category_name : ' - ' }}
                           </td>
                           <td>{{ $subcategory->posts->count() }}</td>
                           <td>
@@ -168,9 +168,9 @@
             <div class="mb-3">
               <div class="form-label">Parent Category</div>
               <select class="form-select" wire:model='parent_category'>
-                @if (!$updateSubCategoryMode)
-                  <option value="">No Selected </option>
-                @endif
+                
+                <option value="0">----Uncategorized----</option>
+                
                 @foreach (\App\Models\Category::all() as $category)
                     <option value="{{ $category->id }}"> {{ $category->category_name }} </option>
                 @endforeach
